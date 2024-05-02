@@ -1,0 +1,18 @@
+{
+  "query": "
+    mutation {
+      createNote(input: { noteableId: \"gid://gitlab/Issue/YOUR_ISSUE_ID\",
+          body: \"*sips tea*\"
+        }) {
+        note {
+          id
+          body
+          discussion {
+            id
+          }
+        }
+        errors
+      }
+    }
+  "
+}

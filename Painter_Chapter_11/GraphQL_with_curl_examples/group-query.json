@@ -1,0 +1,15 @@
+{
+  "query": "
+    query {
+      group(fullPath: \"YOUR_QROUP_PATH\") {
+        id
+        name
+        projects {
+          nodes {
+            name
+          }
+        }
+      }
+    }
+  "
+}

@@ -1,0 +1,17 @@
+{
+  "query": "
+    query {
+      project(fullPath: \"YOUR_PROJECT_PATH\") {
+        name
+        issues {
+          nodes {
+            iid
+            id
+            title
+            state
+          }
+        }
+      }
+    }
+  "
+}

@@ -1,0 +1,21 @@
+# The follwoing are some sample queries you can make from the broswer.
+# Replace YOUR_GROUP_ID with a group id that you own.
+# Replace YOUR_MEMBER_ID with a member id returned by the groups/members query
+
+# Group resource queries
+https://gitlab.com/api/v4/groups/
+https://gitlab.com/api/v4/groups/YOUR_GROUP_ID
+https://gitlab.com/api/v4/groups?top_level_only=true
+https://gitlab.com/api/v4/groups/YOUR_GROUP_ID/subgroups
+https://gitlab.com/api/v4/groups/YOUR_GROUP_ID/deploy_tokens
+https://gitlab.com/api/v4/groups/YOUR_GROUP_ID/members
+https://gitlab.com/api/v4/groups/YOUR_GROUP_ID/members/YOUR_MEMBER_ID
+
+# Project resource queries
+https://gitlab.com/api/v4/projects
+https://gitlab.com/api/v4/projects?page=2
+https://gitlab.com/api/v4/projects?membership=true
+
+# Standalone resource queries
+https://gitlab.com/api/v4/users?search=Jeff%20Painter
+https://gitlab.com/api/v4/personal_access_tokens

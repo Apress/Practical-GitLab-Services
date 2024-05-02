@@ -1,0 +1,13 @@
+{
+  __type(name: "Project") {
+    kind
+	name
+    fields {
+      name
+	  description
+	  type {
+	    name
+	  }
+    }
+  }
+}

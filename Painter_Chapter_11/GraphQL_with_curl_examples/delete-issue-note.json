@@ -1,0 +1,13 @@
+{
+  "query": "
+    mutation {
+      destroyNote(input: { id: \"gid://gitlab/Note/YOUR_NOTE_ID\" }) {
+        note {
+          id
+          body
+        }
+        errors
+      }
+    }
+  "
+}

@@ -1,0 +1,15 @@
+{
+  "query": "
+    mutation {
+      updateNote(input: { id: \"gid://gitlab/Note/YOUR_NOTE_ID\",
+          body: \"*SIPS TEA*\"
+        }) {
+        note {
+          id
+          body
+        }
+        errors
+      }
+    }
+  "
+}

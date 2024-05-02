@@ -1,0 +1,15 @@
+query {
+  project(fullPath: "YOUR_PROJECT_PATH") {
+    jobs(statuses: [SUCCESS, FAILED], first:3) {
+      nodes {
+        id
+        status
+        startedAt
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
