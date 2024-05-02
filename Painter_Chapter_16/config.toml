@@ -1,0 +1,72 @@
+#
+# Useful links:
+#
+# https://docs.gitlab.com/runner/configuration/advanced-configuration.html
+# https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/
+# https://docs.gitlab.com/runner/executors/docker_machine.html
+# https://docs.docker.com/machine/drivers/aws/
+#
+# Replace YOUR_GITLAB_URL, YOUR_MACHINE_PREFIX, YOUR_S3_PREFIX, YOUR_VPC and YOUR_SUBNET
+#   with values appropriate for your runner setup.
+#
+concurrent = 3
+check_interval = 0
+#log_level = "debug"
+[[runners]]
+ name = "runner-manager-1b"
+ url = "https://YOUR_GITLAB_URL"
+ clone_url = "https://YOUR_GITLAB_URL"
+ token = "glrt-REDACTED"
+ token_obtained_at = 2023-08-18T17:08:05Z
+ token_expires_at = 0001-01-01T00:00:00Z
+ executor = "docker+machine"
+ limit = 3
+ output_limit = 204800
+ environment = ["DOCKER_TLS_CERTDIR="]
+ [runners.docker]
+ image = "alpine:latest"
+ tls_verify = false
+ privileged = true
+ disable_cache = true
+ shm_size = 0
+ volumes = ["/cache"]
+ [runners.cache]
+ Type = "s3"
+ Shared = true
+ [runners.cache.s3]
+ ServerAddress = "s3.amazonaws.com"
+ BucketName = "YOUR_S3_PREFIX-cache"
+ BucketLocation = "us-east-1"
+ ServerSideEncryption = "KMS"
+ ServerSideEncryptionKeyID = "alias/gitlab-s3-key"
+ [runners.machine]
+ IdleCount = 1
+ IdleTime = 1800
+ MaxBuilds = 50
+ MachineDriver = "amazonec2"
+ MachineName = "YOUR_MACHINE_PREFIX-1b-%s"
+ MachineOptions = [
+ "engine-label=my-name=YOUR_MACHINE_PREFIX-1b",
+ "amazonec2-region=us-east-1",
+ "amazonec2-vpc-id=vpc-YOUR_VPC",
+ "amazonec2-subnet-id=subnet-YOUR_SUBNET",
+ "amazonec2-zone=b",
+ "amazonec2-private-address-only=true",
+ "amazonec2-tags=runner-manager-name,runner-manager-1b,gitlab,true,gitlab-runner-autoscale,true",
+ "amazonec2-security-group=gitlab-runner-sec-group",
+ "amazonec2-iam-instance-profile=GitLabRunnerManagerRole",
+ "amazonec2-instance-type=m6a.large",
+ "amazonec2-keypair-name=runner",
+ "amazonec2-ssh-keypath=/etc/gitlab-runner/runner",
+ "amazonec2-root-size=50",
+ ]
+ [[runners.machine.autoscaling]]
+ Periods = ["* * 9-17 * * mon-fri *"]
+ IdleCount = 1
+ IdleTime = 1800
+ Timezone = "America/Chicago"
+ [[runners.machine.autoscaling]]
+ Periods = ["* * * * * sat,sun *"]
+ IdleCount = 0
+ IdleTime = 1200
+ Timezone = "America/Chicago"

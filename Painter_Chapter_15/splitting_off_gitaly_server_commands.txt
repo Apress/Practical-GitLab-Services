@@ -1,0 +1,30 @@
+# Installing GitLab package on Gitaly server
+# Replace 16.1.2 with the GitLab version installed
+GITLAB_VERSION='16.1.2-ce.0'
+curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo apt-get install gitlab-ce=$GITLAB_VERSION
+
+# Copying secrets file on Gitab server to ubuntu user home directory
+sudo cp /etc/gitlab/gitlab-secrets.json .
+sudo chmod 0644 gitlab-secrets.json
+
+# Transfering secrets file from GitLab server to Gitaly server from bastion server
+sftp ubuntu@gitlab-ip
+get gitlab-secrets.json
+exit
+sftp ubuntu@gitaly-ip
+put gitlab-secrets.json
+exit
+rm gitlab-secrets.json
+
+# Copying secrets file on Gitaly server from ubuntu user home directory
+sudo cp gitlab-secrets.json /etc/gitlab
+sudo chmod 0600 /etc/gitlab/gitlab-secrets.json
+rm gitlab-secrets.json
+
+# Configuring Gitaly storage
+sudo mkdir -p /mnt/gitlab/git-data
+sudo chown git.git /mnt/gitlab
+sudo chown git.git /mnt/gitlab/git-data
+
+
